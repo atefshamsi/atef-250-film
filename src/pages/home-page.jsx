@@ -1,9 +1,11 @@
 import { Fragment } from 'react';
+import { MovieList } from '../components/movie-list';
 
-export default function HomePage() {
+export default function () {
   return (
     <Fragment>
       <h1>home page</h1>
+      <MovieList />
     </Fragment>
   );
 }
