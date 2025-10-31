@@ -26,7 +26,7 @@ export function MovieList() {
         {movies.data.map(function ({ id, title, poster }) {
           return (
             <li key={id}>
-              <img src={poster} />
+              <img loading="lazy" src={poster} />
               <h2>{title}</h2>
             </li>
           );
