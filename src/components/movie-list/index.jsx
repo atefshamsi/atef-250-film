@@ -1,6 +1,9 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { apiInstance } from '../../utils/api';
+import { Spin, Col, Typography, Row } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
+const { Title } = Typography;
 export function MovieList() {
   const [movies, setMovies] = useState({
     data: [],
@@ -20,18 +23,27 @@ export function MovieList() {
       });
   }, []);
   return (
-    <Fragment>
-      <h1>List</h1>
-      <ul>
-        {movies.data.map(function ({ id, title, poster }) {
-          return (
-            <li key={id}>
-              <img loading="lazy" src={poster} />
-              <h2>{title}</h2>
-            </li>
-          );
-        })}
-      </ul>
-    </Fragment>
+    <div className="container">
+      <Spin
+        indicator={<LoadingOutlined spin />}
+        spinning={loading}
+        tip="Loading"
+        size="large"
+      >
+        <h1>List</h1>
+        <Row gutter={16}>
+          {movies.data.map(function ({ id, title, poster }) {
+            return (
+              <Col key={id} xs={20} sm={16} md={12} lg={8} xl={4}>
+                <li>
+                  <img loading="lazy" src={poster} />
+                  <Title level={4}>{title}</Title>
+                </li>
+              </Col>
+            );
+          })}
+        </Row>
+      </Spin>
+    </div>
   );
 }
