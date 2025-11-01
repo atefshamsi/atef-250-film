@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { apiInstance } from '../../utils/api';
-import { Spin, Col, Typography, Row } from 'antd';
+import { Spin, Col, Typography, Row, Button } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
@@ -34,10 +34,13 @@ export function MovieList() {
         <Row gutter={16}>
           {movies.data.map(function ({ id, title, poster }) {
             return (
-              <Col key={id} xs={20} sm={16} md={12} lg={8} xl={4}>
+              <Col key={id} xs={2} sm={4} md={6} lg={8} xl={10}>
                 <li>
+                  <Button type="primary">test</Button>
                   <img loading="lazy" src={poster} />
-                  <Title level={4}>{title}</Title>
+                  <Title ellipsis level={4}>
+                    {title}
+                  </Title>
                 </li>
               </Col>
             );
