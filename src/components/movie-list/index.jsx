@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react';
 import { apiInstance } from '../../utils/api';
-import { Spin, Col, Typography, Row, Button } from 'antd';
+import { Spin, Col, Typography, Row, Button, Pagination } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
-export function MovieList() {
+export default function MovieList() {
   const [movies, setMovies] = useState({
     data: [],
-    metadata: {},
+    metadata: {
+      current_page: 1,
+      per_page: 12,
+      page_count: 25,
+      total_count: 250,
+    },
   });
   const [loading, setLoading] = useState(false);
-  useEffect(function () {
+  function getApi(page = 1) {
     setLoading(true);
     apiInstance
-      .get('movies')
+      .get(`movies?page=${page}`)
       .then(function (serverResponse) {
         setMovies(serverResponse.data);
         setLoading(false);
@@ -21,7 +26,13 @@ export function MovieList() {
       .catch(function (error) {
         setLoading(false);
       });
+  }
+  useEffect(function () {
+    getApi();
   }, []);
+  function onChange(page) {
+    getApi(page);
+  }
   return (
     <div className="container">
       <Spin
@@ -46,6 +57,15 @@ export function MovieList() {
             );
           })}
         </Row>
+        <Pagination
+          align="center"
+          showSizeChanger={false}
+          defaultCurrent={1}
+          current={movies.metadata.current_page}
+          pageSize={movies.metadata.per_page}
+          total={movies.metadata.total_count}
+          onChange={onChange}
+        />
       </Spin>
     </div>
   );
