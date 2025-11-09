@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { apiInstance } from '../../utils/api';
 import { Spin, Col, Typography, Row, Button, Pagination } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
+import { useSearchParams, createSearchParams } from 'react-router-dom';
 
 const { Title } = Typography;
 export default function MovieList() {
@@ -15,20 +16,34 @@ export default function MovieList() {
     },
   });
   const [loading, setLoading] = useState(false);
-  function getApi(page = 1) {
-    setLoading(true);
-    apiInstance
-      .get(`movies?page=${page}`)
-      .then(function (serverResponse) {
-        setMovies(serverResponse.data);
-        setLoading(false);
-      })
-      .catch(function (error) {
-        setLoading(false);
+  const [queryStrings, setQueryStrings] = useSearchParams();
+  const page = queryStrings.get('page');
+  // function getApi(page = 1) {
+  //   setLoading(true);
+  //   apiInstance
+  //     .get(`movies?page=${page}`)
+  //     .then(function (serverResponse) {
+  //       setMovies(serverResponse.data);
+  //       setLoading(false);
+  //     })
+  //     .catch(function (error) {
+  //       setLoading(false);
+  //     });
+  // }
+  const getApi = async (page = 1) => {
+    try {
+      setLoading(true);
+      const response = await apiInstance.get('movies', {
+        params: { page },
       });
-  }
+      setMovies(response.data);
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+    }
+  };
   useEffect(function () {
-    getApi();
+    getApi(page);
   }, []);
   function onChange(page) {
     getApi(page);
