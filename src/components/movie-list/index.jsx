@@ -36,6 +36,7 @@ export default function MovieList() {
       const response = await apiInstance.get('movies', {
         params: { page },
       });
+      setQueryStrings(createSearchParams({ page }));
       setMovies(response.data);
       setLoading(false);
     } catch (e) {
