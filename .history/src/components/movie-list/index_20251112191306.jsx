@@ -36,7 +36,6 @@ export default function MovieList() {
       const response = await apiInstance.get('movies', {
         params: { page },
       });
-      console.log('salam');
       if (page != '1') {
         setQueryStrings(createSearchParams({ page }));
       }
